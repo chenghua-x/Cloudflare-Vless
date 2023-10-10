@@ -75,4 +75,4 @@ proxy-groups:
 #代理规则可自行添加 
 rules:
   - GEOIP,CN,DIRECT
-  - MATCH,🌍选择代理节点
+  - MATCH,代理节点
