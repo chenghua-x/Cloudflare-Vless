@@ -45,6 +45,23 @@ proxies:
     headers:
       Host: vless.mail-chenghua.workers.dev                       #host域名，与上面的servername一致
 
+#==============================（vmess-ws-tls节点）
+- name: vmess                                    #可自定义名称
+  type: vmess
+  server: hua.giteehua.repl.co                   #解析的域名或者优选域名IP
+  port: 443                                      #自定义的端口
+  uuid: 5ee60e65-40e5-422c-ad6e-e621cdb41371       #自定义的uuid
+  alterId: 0
+  cipher: auto
+  udp: true
+  tls: true
+  network: ws
+  servername: hua.giteehua.repl.co                     #sni域名，与下面的host一致
+  ws-opts:
+    path: "/5ee60e65-40e5-422c-ad6e-e621cdb41371-vm"   #自定义的path路径
+    headers:
+      Host: hua.giteehua.repl.co                       #host域名，与上面的servername一致
+
 #==============================（warp-wireguard节点）  
 - name: warp                                   #可自定义名称
   type: wireguard         
@@ -66,6 +83,9 @@ proxy-groups:
   proxies:
     - warp                                 #自定义添加协议的name字段
     - vless
+    - vmess
+
+
 - name: 自动选择
   type: url-test
   url: http://www.gstatic.com/generate_204
@@ -74,8 +94,9 @@ proxy-groups:
   proxies:
    - warp                                 #自定义添加协议的name字段
    - vless
-    
-- name: 代理节点
+   - vmess
+
+- name: PROXY
   type: select
   proxies:
     - 负载均衡                                            #自定义添加协议的name字段
@@ -83,11 +104,16 @@ proxy-groups:
     - DIRECT
     - warp                                                #自定义添加协议的name字段
     - vless
-
+    - vmess
 
 
 #==============================（代理规则）
 #代理规则可自行添加 
 rules:
   - GEOIP,CN,DIRECT
-  - MATCH,代理节点
+  - MATCH,PROXY
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising.list,REJECT
+  - DOMAIN-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising_Domain.list,REJECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/release/rule/Loon/Proxy/Proxy.list,PROXY
+  - DOMAIN-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Proxy/Proxy_Domain.list,PROXY
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/China/China.list,DIRECT
