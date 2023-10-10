@@ -98,5 +98,4 @@ rules:
   - GEOIP,LAN,DIRECT
   - MATCH,DIRECT
   - RULE-SET,reject,REJECT
-  - RULE-SET,gfw,PROXY
 
