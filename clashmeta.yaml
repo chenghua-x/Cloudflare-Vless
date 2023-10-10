@@ -61,7 +61,22 @@ proxies:
     path: "/5ee60e65-40e5-422c-ad6e-e621cdb41371-vm"   #自定义的path路径
     headers:
       Host: hua.giteehua.repl.co                       #host域名，与上面的servername一致
-
+#==============================（vmess-ws-tls节点）
+- name: vmess-jp                                    #可自定义名称
+  type: vmess
+  server: jp4.hneko.online                   #解析的域名或者优选域名IP
+  port: 443                                      #自定义的端口
+  uuid: e35df733-a820-44db-a3cd-95d56929a476       #自定义的uuid
+  alterId: 0
+  cipher: auto
+  udp: true
+  tls: false
+  network: ws
+  servername: jp4.hneko.online                     #sni域名，与下面的host一致
+  ws-opts:
+    path: "/cctv13/hd.m3u8"   #自定义的path路径
+    headers:
+      Host: jp4.hneko.online                       #host域名，与上面的servername一致
 #==============================（warp-wireguard节点）  
 - name: warp                                   #可自定义名称
   type: wireguard         
@@ -76,12 +91,27 @@ proxies:
 #==============================（代理分流）
 #分流组可自行创建添加，proxies参数下的name节点名称，按需求自行增减，确保出现的name节点名称在二区代理协议中可查找
 proxy-groups:
-- name: PROXY
+- name: 负载均衡
+  type: load-balance
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  proxies:
+    - warp                                 #自定义添加协议的name字段
+    - vless-cf
+- name: 自动选择
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  tolerance: 50
+  proxies:
+    - vmess
+    - vmess-jp
+    
+- name: 代理节点
   type: select
   proxies:
-    - warp                                                #自定义添加协议的name字段
-    - vless
-    - vmess
+    - 负载均衡                                            #自定义添加协议的name字段
+    - 自动选择
 #==============================（代理规则）
 #代理规则可自行添加 
 
@@ -96,5 +126,5 @@ rule-providers:
 
 rules:
   - GEOIP,CN,DIRECT
-  - MATCH,PROXY
+  - MATCH,代理节点
   - RULE-SET,reject,REJECT
