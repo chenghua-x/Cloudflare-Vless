@@ -117,9 +117,18 @@ rule-providers:
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
     path: ./ruleset/reject.yaml
     interval: 86400
+gfw:
+    type: http
+    behavior: domain
+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
+    path: ./ruleset/gfw.yaml
+    interval: 86400
+
 
 rules:
   - GEOIP,CN,DIRECT
   - GEOIP,LAN,DIRECT
-  - MATCH,PROXY
+  - MATCH,DIRECT
   - RULE-SET,reject,REJECT
+  - RULE-SET,gfw,PROXY
+
