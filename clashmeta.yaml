@@ -76,7 +76,8 @@ proxies:
 #==============================（代理分流）
 #分流组可自行创建添加，proxies参数下的name节点名称，按需求自行增减，确保出现的name节点名称在二区代理协议中可查找
 proxy-groups:
-
+- name: PROXY
+  type: select
   proxies:
     - warp                                                #自定义添加协议的name字段
     - vless
@@ -85,12 +86,6 @@ proxy-groups:
 #代理规则可自行添加 
 
 rule-providers:
-  gfw:
-    type: http
-    behavior: domain
-    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
-    path: ./ruleset/gfw.yaml
-    interval: 86400
 
   reject:
     type: http
@@ -101,9 +96,5 @@ rule-providers:
 
 rules:
   - GEOIP,CN,DIRECT
-  - GEOIP,LAN,DIRECT
-  - MATCH,DIRECT
+  - MATCH,PROXY
   - RULE-SET,reject,REJECT
-  - RULE-SET,gfw,PROXY
-
-
