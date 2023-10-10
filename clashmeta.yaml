@@ -76,8 +76,7 @@ proxies:
 #==============================（代理分流）
 #分流组可自行创建添加，proxies参数下的name节点名称，按需求自行增减，确保出现的name节点名称在二区代理协议中可查找
 proxy-groups:
-- name: PROXY
-  type: select
+
   proxies:
     - warp                                                #自定义添加协议的name字段
     - vless
