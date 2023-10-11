@@ -91,11 +91,29 @@ proxies:
 #==============================（代理分流）
 #分流组可自行创建添加，proxies参数下的name节点名称，按需求自行增减，确保出现的name节点名称在二区代理协议中可查找
 proxy-groups:
-- name: PROXY
+- name: 负载均衡
+  type: load-balance
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  proxies:
+    - warp                                  #自定义添加协议的name字段
+    - vmess
+    - vless
+- name: 自动选择
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  tolerance: 50
+  proxies:
+    - vmess                                 #自定义添加协议的name字段
+    - vless
+    - warp                                  #自定义添加协议的name字段
+- name: 代理节点
   type: select
   proxies:
-    - warp                                            #自定义添加协议的name字段
-    - vmess
+    - 负载均衡                              #自定义添加协议的name字段
+    - 自动选择
+
 #==============================（代理规则）
 #代理规则可自行添加 
 
@@ -110,5 +128,5 @@ rule-providers:
 
 rules:
   - GEOIP,CN,DIRECT
-  - MATCH,PROXY
+  - MATCH,代理节点
   - RULE-SET,reject,REJECT
