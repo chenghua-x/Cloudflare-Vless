@@ -31,26 +31,26 @@ proxies:
 #==============================（vmess-ws节点）
 - name: vless                              
   type: vless
-  server: time.is                          #解析的域名或者优选域名IP
-  port: 80                                       #自定义的端口
+  server: time.is                                  #解析的域名或者优选域名IP
+  port: 80                                         #自定义的端口
   uuid: 4529d3ae-8255-49c1-89d3-f7ac67ddd4a5       #自定义的uuid
   alterId: 0
   cipher: auto
   udp: true
   tls: false
   network: ws
-  servername: vless.mail-chenghua.workers.dev                     #sni域名，与下面的host一致
+  servername: vless.chenghua.workers.dev                     #sni域名，与下面的host一致
   ws-opts:
-    path: "/?ed=2048"                                             #" "内自定义的path路径
+    path: "/?ed=2048"                                        #" "内自定义的path路径
     headers:
-      Host: vless.mail-chenghua.workers.dev                       #host域名，与上面的servername一致
+      Host: vless.chenghua.workers.dev                       #host域名，与上面的servername一致
 
 #==============================（vmess-ws-tls节点）
 - name: vmess                                    #可自定义名称
   type: vmess
   server: hua.giteehua.repl.co                   #解析的域名或者优选域名IP
   port: 443                                      #自定义的端口
-  uuid: 5ee60e65-40e5-422c-ad6e-e621cdb41371       #自定义的uuid
+  uuid: 5ee60e65-40e5-422c-ad6e-e621cdb41371     #自定义的uuid
   alterId: 0
   cipher: auto
   udp: true
@@ -61,33 +61,16 @@ proxies:
     path: "/5ee60e65-40e5-422c-ad6e-e621cdb41371-vm"   #自定义的path路径
     headers:
       Host: hua.giteehua.repl.co                       #host域名，与上面的servername一致
-#==============================（vmess-ws-tls节点）
-- name: vmess-kr                                    #可自定义名称
-  type: vmess
-  server: kr1.hneko.online                   #解析的域名或者优选域名IP
-  port: 443                                      #自定义的端口
-  uuid: e35df733-a820-44db-a3cd-95d56929a476       #自定义的uuid
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: false
-  network: ws
-  servername: kr1.hneko.online                     #sni域名，与下面的host一致
-  ws-opts:
-    path: "/cctv13/hd.m3u8"   #自定义的path路径
-    headers:
-      Host: kr1.hneko.online                       #host域名，与上面的servername一致
 #==============================（warp-wireguard节点）  
 - name: warp                                   #可自定义名称
   type: wireguard         
-  server: 162.159.192.111                                   #可自定义优选对端IP，与下面port的端口相对应
-  port: 500                                                 #可自定义优选对端IP，与上面server的IP相对应
+  server: 162.159.192.111                                    #可自定义优选对端IP，与下面port的端口相对应
+  port: 500                                                  #可自定义优选对端IP，与上面server的IP相对应
   ip: 172.16.0.2
-  ipv6: 2606:4700:110:899d:a62f:f1af:f58b:dc7b/128          #与private-key相对应，如删除本行，表示仅IPV4
+  ipv6: 2606:4700:110:899d:a62f:f1af:f58b:dc7b/128           #与private-key相对应，如删除本行，表示仅IPV4
   public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
   private-key: KGrZxdlruKYmZhFx/sWu01W27eKksR4k//bl+w08IV8=  #获取private-key，私key
   udp: true
-
 #==============================（代理分流）
 #分流组可自行创建添加，proxies参数下的name节点名称，按需求自行增减，确保出现的name节点名称在二区代理协议中可查找
 proxy-groups:
